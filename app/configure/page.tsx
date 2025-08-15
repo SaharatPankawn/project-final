@@ -1,4 +1,3 @@
-// app/new-project/configure/page.tsx
 'use client'
 
 import Navbar from '@/components/navbar'
@@ -38,7 +37,6 @@ export default function ConfigureProjectPage() {
   const [selectedFW, setSelectedFW] = useState<FrameworkKey>('react')
   const [fwOpen, setFwOpen] = useState(false)
 
-  // ปิดไว้ก่อนตอนเข้าแรก
   const [isBuildOpen, setIsBuildOpen] = useState(false)
   const [isEnvOpen, setIsEnvOpen] = useState(false)
 
@@ -82,7 +80,6 @@ export default function ConfigureProjectPage() {
 
   const [buildRows, setBuildRows] = useState<BuildRow[]>(buildDefaults)
   useEffect(() => {
-    // อัปเดต placeholder เมื่อเปลี่ยน framework (ไม่ทับค่าที่ผู้ใช้พิมพ์)
     setBuildRows(prev =>
       prev.map((r, i) => ({
         ...r,
@@ -117,7 +114,6 @@ export default function ConfigureProjectPage() {
           </p>
 
           <div className='grid grid-cols-1 gap-6 md:grid-cols-[260px_1fr]'>
-            {/* Left: Selected framework badge */}
             <aside className='h-fit'>
               <div className='flex items-center gap-3 rounded-lg border border-[#1a2128] bg-[#0b1014] px-4 py-3'>
                 <FaReact className='h-6 w-6 text-cyan-400' />
@@ -125,11 +121,9 @@ export default function ConfigureProjectPage() {
               </div>
             </aside>
 
-            {/* Right: Form */}
             <section className='rounded-xl border border-[#1a2128] bg-[#090C10] p-6 shadow'>
               <h2 className='mb-6 text-lg font-semibold'>Configure Project</h2>
 
-              {/* PROJECT NAME */}
               <label className='mb-2 block text-xs text-gray-300'>
                 PROJECT NAME
               </label>
@@ -138,7 +132,6 @@ export default function ConfigureProjectPage() {
                 className='mb-4 h-10 w-full rounded-lg border border-[#1a2128] bg-[#0b1014] px-3 text-sm outline-none focus:ring-2 focus:ring-blue-600'
               />
 
-              {/* FRAMEWORK PRESET (คงไว้ + เลือกได้) */}
               <label className='mb-2 block text-xs text-gray-300'>
                 FRAMEWORK PRESET
               </label>
@@ -184,7 +177,6 @@ export default function ConfigureProjectPage() {
                 </ul>
               )}
 
-              {/* ROOT DIRECTORY */}
               <label className='mb-2 block text-xs text-gray-300'>
                 ROOT DIRECTORY
               </label>
@@ -198,7 +190,6 @@ export default function ConfigureProjectPage() {
                 </button>
               </div>
 
-              {/* Build and Output Settings — ปิดไว้ก่อน */}
               <div className='mb-3 overflow-hidden rounded-lg border border-[#1a2128] bg-[#0b1014]'>
                 <button
                   type='button'
@@ -230,7 +221,7 @@ export default function ConfigureProjectPage() {
                           }
                           className='h-9 flex-1 rounded-lg border border-[#1a2128] bg-[#0b1014] px-3 text-xs outline-none focus:ring-2 focus:ring-blue-600'
                         />
-                        {/* Toggle */}
+
                         <button
                           type='button'
                           onClick={() => toggleBuildRow(row.id)}
@@ -253,7 +244,6 @@ export default function ConfigureProjectPage() {
                 )}
               </div>
 
-              {/* Environment Variables — ปิดไว้ก่อน */}
               <div className='mb-6 overflow-hidden rounded-lg border border-[#1a2128] bg-[#0b1014]'>
                 <button
                   type='button'
