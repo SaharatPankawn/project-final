@@ -8,9 +8,7 @@ export default function DashboardPage() {
 
       <main className='flex-1'>
         <div className='mx-auto mt-20 w-full max-w-6xl px-6'>
-          {/* แถว Search + ปุ่ม */}
           <div className='mb-6 flex items-center gap-4'>
-            {/* Search Box พร้อมไอคอน */}
             <div className='relative flex-1'>
               <FaSearch className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400' />
               <input
@@ -22,7 +20,6 @@ export default function DashboardPage() {
               />
             </div>
 
-            {/* ปุ่ม Add Collaborators */}
             <button
               className='flex min-w-[170px] items-center gap-2 whitespace-nowrap rounded-lg border
                          border-[#1a2128] bg-[#0b1014] px-4 py-2
@@ -32,7 +29,6 @@ export default function DashboardPage() {
               <span className='text-sm'>Add Collaborators</span>
             </button>
 
-            {/* ปุ่ม + */}
             <button
               className='flex items-center justify-center rounded-lg border border-[#1a2128] bg-[#0b1014]
                          px-3 py-2 transition hover:bg-[#131a20]'
@@ -42,7 +38,6 @@ export default function DashboardPage() {
             </button>
           </div>
 
-          {/* กล่อง No Project */}
           <section
             className='relative w-full rounded-xl border border-[#1a2128]
                        bg-[#0b1014] px-10 py-12 text-center shadow-lg'
