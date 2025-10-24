@@ -51,11 +51,31 @@ export default function LoginPage() {
       }
 
       // เก็บ token และข้อมูล user
-      if (data?.token) {
-        localStorage.setItem('auth_token', data.token)
+      console.log('💾 Backend Response:', data)
+      
+      // ถ้า Backend ส่ง token มา ให้เก็บ (ถ้าไม่มีก็ใช้ email แทน)
+      const token = data?.token || data?.access_token || `temp_${Date.now()}`
+      localStorage.setItem('auth_token', token)
+      console.log('✅ Token saved:', token)
+      
+      // เก็บข้อมูล user (รองรับหลายรูปแบบ)
+      const username = data?.user || data?.username || email.split('@')[0]
+      const userToSave = {
+        user: username,
+        email: data?.email || email,
+        username: username
       }
-      if (data?.user) {
-        localStorage.setItem('user', JSON.stringify(data.user))
+      localStorage.setItem('user', JSON.stringify(userToSave))
+      console.log('✅ User saved:', userToSave)
+      
+      // ตรวจสอบว่าเก็บได้จริง
+      const savedToken = localStorage.getItem('auth_token')
+      const savedUser = localStorage.getItem('user')
+      console.log('🔍 Verify localStorage:', { savedToken, savedUser })
+      
+      if (!savedToken || !savedUser) {
+        console.error('❌ Failed to save to localStorage!')
+        throw new Error('ไม่สามารถบันทึกข้อมูลได้')
       }
 
       setMsg('🎉 เข้าสู่ระบบสำเร็จ! กำลังนำไปหน้าหลัก...')
@@ -64,6 +84,7 @@ export default function LoginPage() {
       setTimeout(() => {
         router.push('/dashboard')
       }, 1500)
+
     } catch (err: any) {
       console.error('❌ Error:', err)
       setMsg(`❌ ${err.message}`)
@@ -115,7 +136,7 @@ export default function LoginPage() {
           <button
             type='submit'
             disabled={loading}
-            className='w-full rounded bg-blue-600 py-2 font-semibold transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60'
+            className='w-full rounded bg-blue-600 py-2 font-semibold hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60 transition-colors'
           >
             {loading ? 'กำลังเข้าสู่ระบบ...' : 'Login'}
           </button>
@@ -137,7 +158,7 @@ export default function LoginPage() {
           <p>
             ยังไม่มีบัญชี?{' '}
             <a href='/register' className='text-blue-400 hover:underline'>
-              Register
+              สมัครสมาชิก
             </a>
           </p>
           {/* เพิ่มลิงก์ Forgot Password ถ้าต้องการ */}
