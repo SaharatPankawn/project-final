@@ -39,7 +39,7 @@ export default function DashboardPage() {
     const token = localStorage.getItem('auth_token')
     const userData = localStorage.getItem('user')
 
-    console.log('🔐 Checking auth:', { token, userData })
+    // console.log('🔐 Checking auth:', { token, userData })
 
     if (!token) {
       console.warn('❌ No token found, redirecting to login')
@@ -55,7 +55,7 @@ export default function DashboardPage() {
 
     try {
       const parsedUser = JSON.parse(userData)
-      console.log('👤 Parsed user:', parsedUser)
+      // console.log('👤 Parsed user:', parsedUser)
 
       const username =
         parsedUser.user ||
@@ -68,7 +68,7 @@ export default function DashboardPage() {
         return
       }
 
-      console.log('✅ Username set to:', username)
+      // console.log('✅ Username set to:', username)
       setUser(username)
     } catch (err) {
       console.error('❌ Error parsing user data:', err)
@@ -76,22 +76,33 @@ export default function DashboardPage() {
     }
   }, [router])
 
+  // ดึงข้อมูล Projects Databases
   useEffect(() => {
     if (!user) return
 
     const fetchData = async () => {
       setLoading(true)
       try {
+        // ดึง Projects
         const projectRes = await fetch(`/api/v1/project?user=${user}`)
+        // console.log('📁 Project API Response:', projectRes.status)
         if (projectRes.ok) {
           const projectData = await projectRes.json()
+          // console.log('📁 Project Data:', projectData)
           setProjects(Array.isArray(projectData) ? projectData : [])
+        } else {
+          console.error('❌ Project API failed:', projectRes.status)
         }
 
+        // ดึง Databases
         const dbRes = await fetch(`/api/v1/get/db?user=${user}`)
+        // console.log('🗄️ Database API Response:', dbRes.status)
         if (dbRes.ok) {
           const dbData = await dbRes.json()
+          // console.log('🗄️ Database Data:', dbData)
           setDatabases(Array.isArray(dbData) ? dbData : [])
+        } else {
+          console.error('❌ Database API failed:', dbRes.status)
         }
       } catch (err) {
         console.error('Error fetching data:', err)
@@ -103,6 +114,7 @@ export default function DashboardPage() {
     fetchData()
   }, [user])
 
+  // ลบโปรเจค
   const handleDeleteProject = async (projectName: string) => {
     if (!confirm(`ต้องการลบโปรเจค "${projectName}" ใช่หรือไม่?`)) return
 
@@ -148,8 +160,9 @@ export default function DashboardPage() {
     <div className='flex min-h-screen flex-col bg-[#090C10] text-white'>
       <Navbar />
 
-      <main className='flex-1'>
-        <div className='mx-auto mt-20 w-full max-w-6xl px-6'>
+      <main className='flex-1 pt-28'>
+        <div className='mx-auto w-full max-w-6xl px-6 pb-8'>
+          {/* Search & Actions */}
           <div className='mb-6 flex items-center gap-4'>
             <div className='relative flex-1'>
               <FaSearch className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400' />
@@ -183,6 +196,7 @@ export default function DashboardPage() {
             </button>
           </div>
 
+          {/* Stats Cards */}
           <div className='mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3'>
             <div className='rounded-xl border border-[#1a2128] bg-[#0b1014] p-6'>
               <div className='flex items-center gap-3'>
@@ -221,15 +235,27 @@ export default function DashboardPage() {
             </div>
           </div>
 
+          {/* Projects Section */}
           <section className='mb-8'>
             <div className='mb-4 flex items-center justify-between'>
               <h2 className='text-xl font-semibold'>📁 Recent Projects</h2>
-              <button
-                onClick={() => router.push('/projects')}
-                className='text-sm text-blue-400 hover:underline'
-              >
-                ดูทั้งหมด →
-              </button>
+              <div className='flex items-center gap-3'>
+                <button
+                  onClick={() => router.push('/projects')}
+                  className='text-sm text-blue-400 hover:underline'
+                >
+                  ดูทั้งหมด →
+                </button>
+                {projects.length > 0 && (
+                  <button
+                    onClick={() => router.push('/projects/create')}
+                    className='flex items-center justify-center rounded-lg bg-blue-600 p-2 transition hover:bg-blue-700'
+                    title='Create New Project'
+                  >
+                    <FaPlus className='h-4 w-4' />
+                  </button>
+                )}
+              </div>
             </div>
 
             {filteredProjects.length === 0 ? (
@@ -293,6 +319,7 @@ export default function DashboardPage() {
             )}
           </section>
 
+          {/* Databases Section */}
           {databases.length > 0 && (
             <section>
               <div className='mb-4 flex items-center justify-between'>

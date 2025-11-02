@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { FaUser, FaSignOutAlt, FaCog, FaChevronDown } from 'react-icons/fa'
+import { FaSignOutAlt, FaChevronDown } from 'react-icons/fa'
 
 export default function Navbar() {
   const router = useRouter()
@@ -12,7 +12,7 @@ export default function Navbar() {
   const [showDropdown, setShowDropdown] = useState(false)
 
   useEffect(() => {
-    // ตรวจสอบ login
+    // ตรวจสอบว่า login แล้วหรือยัง
     const token = localStorage.getItem('auth_token')
     const userData = localStorage.getItem('user')
 
@@ -29,27 +29,44 @@ export default function Navbar() {
     } else {
       setIsLoggedIn(false)
     }
-  }, [pathname])
+  }, [pathname]) // เช็คใหม่ทุกครั้งที่เปลี่ยนหน้า
 
   const handleLogout = () => {
     if (confirm('ต้องการออกจากระบบใช่หรือไม่?')) {
+      console.log('🚪 Logging out...')
+
+      // ลบข้อมูลทั้งหมดจาก localStorage
       localStorage.removeItem('auth_token')
       localStorage.removeItem('user')
+      localStorage.clear() // เคลียร์ทั้งหมดเผื่อมีข้อมูลอื่น
+
+      console.log('✅ localStorage cleared')
+
+      // อัพเดท state
       setIsLoggedIn(false)
       setUsername('')
+
+      // Redirect และ force reload
       router.push('/login')
+
+      // Force reload หน้าเพื่อให้แน่ใจว่า state reset หมด
+      setTimeout(() => {
+        window.location.href = '/login'
+      }, 100)
     }
   }
 
   return (
     <header className='fixed top-0 z-50 w-full border-b border-[#1a2128] bg-[#090C10] shadow-lg'>
       <div className='flex items-center justify-between px-8 py-4'>
+        {/* Logo */}
         <Link href={isLoggedIn ? '/dashboard' : '/'}>
           <h1 className='cursor-pointer text-xl font-semibold transition hover:text-blue-400'>
             🚀 Project Log
           </h1>
         </Link>
 
+        {/* Navigation Menu (แสดงเฉพาะเมื่อ login แล้ว) */}
         {isLoggedIn && (
           <nav className='hidden items-center gap-6 md:flex'>
             <Link
@@ -86,6 +103,7 @@ export default function Navbar() {
         {/* Right Side */}
         <div className='flex items-center gap-4'>
           {isLoggedIn ? (
+            // User Menu (หลัง login)
             <div className='relative'>
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
@@ -98,48 +116,41 @@ export default function Navbar() {
                 <FaChevronDown className='h-3 w-3 text-gray-400' />
               </button>
 
+              {/* Dropdown Menu */}
               {showDropdown && (
-                <div className='absolute right-0 mt-2 w-48 rounded-lg border border-[#1a2128] bg-[#0b1014] shadow-xl'>
-                  <div className='border-b border-[#1a2128] px-4 py-3'>
-                    <p className='font-semibold'>{username}</p>
-                    <p className='text-xs text-gray-400'>
-                      {JSON.parse(localStorage.getItem('user') || '{}').email ||
-                        ''}
-                    </p>
-                  </div>
+                <>
+                  {/* Backdrop overlay */}
+                  <div
+                    className='fixed inset-0 z-40'
+                    onClick={() => setShowDropdown(false)}
+                  ></div>
 
-                  <div className='py-2'>
-                    <Link
-                      href='/profile'
-                      onClick={() => setShowDropdown(false)}
-                      className='flex items-center gap-3 px-4 py-2 text-sm transition hover:bg-[#131a20]'
-                    >
-                      <FaUser className='h-4 w-4 text-gray-400' />
-                      Profile
-                    </Link>
-                    <Link
-                      href='/settings'
-                      onClick={() => setShowDropdown(false)}
-                      className='flex items-center gap-3 px-4 py-2 text-sm transition hover:bg-[#131a20]'
-                    >
-                      <FaCog className='h-4 w-4 text-gray-400' />
-                      Settings
-                    </Link>
-                  </div>
+                  {/* Dropdown content */}
+                  <div className='absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-[#1a2128] bg-[#0b1014] shadow-xl'>
+                    <div className='border-b border-[#1a2128] px-4 py-3'>
+                      <p className='font-semibold'>{username}</p>
+                      <p className='text-xs text-gray-400'>
+                        {JSON.parse(localStorage.getItem('user') || '{}')
+                          .email || ''}
+                      </p>
+                    </div>
 
-                  <div className='border-t border-[#1a2128] py-2'>
-                    <button
-                      onClick={() => {
-                        setShowDropdown(false)
-                        handleLogout()
-                      }}
-                      className='flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-red-400 transition hover:bg-[#131a20]'
-                    >
-                      <FaSignOutAlt className='h-4 w-4' />
-                      Logout
-                    </button>
+                    <div className='py-2'>
+                      <button
+                        onClick={e => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setShowDropdown(false)
+                          handleLogout()
+                        }}
+                        className='flex w-full items-center gap-3 px-4 py-2 text-left text-sm text-red-400 transition hover:bg-red-500/10'
+                      >
+                        <FaSignOutAlt className='h-4 w-4' />
+                        Logout
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
           ) : (
@@ -159,13 +170,6 @@ export default function Navbar() {
           )}
         </div>
       </div>
-
-      {showDropdown && (
-        <div
-          className='fixed inset-0 z-40'
-          onClick={() => setShowDropdown(false)}
-        ></div>
-      )}
     </header>
   )
 }
