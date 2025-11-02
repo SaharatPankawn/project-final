@@ -22,7 +22,7 @@ export default function DeploySuccessPage() {
     <div className='min-h-screen bg-[#090C10] text-white'>
       <Navbar />
 
-      <main className='mx-auto w-full max-w-6xl px-6 pt-16'>
+      <main className='mx-auto w-full max-w-6xl px-6 pt-24'>
         <h1 className='text-[28px] font-semibold'>Congratulations !</h1>
         <p className='mt-1 text-sm text-gray-300'>
           you just deployed a new Project

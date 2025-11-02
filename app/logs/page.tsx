@@ -13,22 +13,9 @@ import Navbar from '../../components/navbar'
 export default function ProjectLogPage() {
   return (
     <div className='min-h-screen bg-[#090B0F] text-white'>
-      {/* Navbar */}
-      <nav className='flex items-center justify-between border-b border-gray-800 bg-[#0f1115] px-6 py-4'>
-        <h1 className='text-lg font-semibold'>Project Log</h1>
-        <div className='flex gap-2'>
-          <button className='rounded bg-blue-600 px-4 py-2 hover:bg-blue-700'>
-            Login
-          </button>
-          <button className='rounded bg-blue-600 px-4 py-2 hover:bg-blue-700'>
-            Sign Up
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
-      {/* Search bar & Controls */}
-      <div className='flex items-center gap-2 border-b border-gray-800 px-6 py-4'>
-        {/* Icon buttons */}
+      <div className='flex items-center gap-2 border-b border-gray-800 px-6 py-4 pt-24'>
         <button className='flex h-10 w-10 items-center justify-center rounded bg-[#1a1d21] hover:bg-[#25292d]'>
           <FaFilter className='text-white' />
         </button>
@@ -39,7 +26,6 @@ export default function ProjectLogPage() {
           <FaBolt className='text-white' />
         </button>
 
-        {/* Search input */}
         <div className='flex h-10 flex-1 items-center rounded bg-[#1a1d21] px-3'>
           <FaSearch className='mr-2 text-gray-400' />
           <input
@@ -49,19 +35,16 @@ export default function ProjectLogPage() {
           />
         </div>
 
-        {/* Live button */}
         <button className='flex h-10 items-center gap-2 rounded bg-[#1a1d21] px-4 text-white hover:bg-[#25292d]'>
           <FaPlay className='text-white' />
           Live
         </button>
 
-        {/* Refresh button */}
         <button className='flex h-10 w-10 items-center justify-center rounded bg-[#1a1d21] hover:bg-[#25292d]'>
           <FaSync className='text-white' />
         </button>
       </div>
 
-      {/* Table */}
       <div className='px-6 py-4'>
         <table className='w-full text-sm'>
           <thead className='border-b border-gray-800'>

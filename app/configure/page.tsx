@@ -106,7 +106,7 @@ export default function ConfigureProjectPage() {
     <div className='flex min-h-screen flex-col bg-[#090C10] text-white'>
       <Navbar />
 
-      <main className='flex-1'>
+      <main className='flex-1 pt-24'>
         <div className='mx-auto w-full max-w-6xl px-6 pt-16'>
           <div className='mb-2 text-3xl font-semibold'>You’re almost done.</div>
           <p className='mb-8 text-sm text-gray-300'>

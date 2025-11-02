@@ -6,7 +6,7 @@ export default function NewProjectPage() {
     <div className='flex min-h-screen flex-col bg-[#090C10] text-white'>
       <Navbar />
 
-      <main className='flex-1'>
+      <main className='flex-1 pt-24'>
         <div className='mx-auto w-full max-w-[720px] px-4 pt-16'>
           <h1 className='mb-6 text-3xl font-semibold'>
             Let's build something new.
