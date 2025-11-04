@@ -187,7 +187,7 @@ export default function DashboardPage() {
             </button>
 
             <button
-              onClick={() => router.push('/projects/create')}
+              onClick={() => router.push('/create')}
               className='flex items-center justify-center rounded-lg border border-[#1a2128] bg-[#0b1014]
                          px-3 py-2 transition hover:bg-[#131a20]'
               aria-label='New Project'
@@ -248,7 +248,7 @@ export default function DashboardPage() {
                 </button>
                 {projects.length > 0 && (
                   <button
-                    onClick={() => router.push('/projects/create')}
+                    onClick={() => router.push('/create')}
                     className='flex items-center justify-center rounded-lg bg-blue-600 p-2 transition hover:bg-blue-700'
                     title='Create New Project'
                   >
@@ -267,7 +267,7 @@ export default function DashboardPage() {
                   Create a project from a Template, or import a Git repository.
                 </p>
                 <button
-                  onClick={() => router.push('/projects/create')}
+                  onClick={() => router.push('/create')}
                   className='rounded-lg bg-blue-600 px-6 py-2 font-medium text-white transition hover:bg-blue-700'
                 >
                   Create a New Project
